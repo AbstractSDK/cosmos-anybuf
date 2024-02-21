@@ -1,0 +1,31 @@
+[package]
+name = "neutron-test"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
+panic = 'abort'
+incremental = false
+overflow-checks = true
+
+[dependencies]
+cosmwasm-std = { workspace = true }
+cosmos-anybuf = { path = "../../cosmos-anybuf" }
+cosmwasm-schema = { workspace = true }
+
+[dev-dependencies]
+osmosis-std = "0.20.0"
+cw-orch = { package = "cw-orch-interchain", git = "ssh://git@github.com/AbstractSDK/cw-orch-interchain.git", tag = "v0.19.2", features = [
+    "daemon",
+] }
+env_logger = { version = "0.10" }
+prost-types = { version = "0.11.9" }
