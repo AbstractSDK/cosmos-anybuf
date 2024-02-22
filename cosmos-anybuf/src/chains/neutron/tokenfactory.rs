@@ -17,7 +17,10 @@ impl TokenFactory for Neutron {
     type QueryDenomsFromCreatorResponse = QueryDenomsFromCreatorResponse;
     type QueryBeforeSendHookAddressResponse = QueryBeforeSendHookAddressResponse;
 
-    fn create_denom<S: Into<String>>(sender: S, subdenom: S) -> cosmwasm_std::CosmosMsg {
+    fn create_denom(
+        sender: impl Into<String>,
+        subdenom: impl Into<String>,
+    ) -> cosmwasm_std::CosmosMsg {
         tokenfactory_tx::MsgCreateDenom {
             sender: sender.into(),
             subdenom: subdenom.into(),
@@ -25,10 +28,10 @@ impl TokenFactory for Neutron {
         .to_msg()
     }
 
-    fn mint<S: Into<String>>(
-        sender: S,
+    fn mint(
+        sender: impl Into<String>,
         amount: cosmwasm_std::Coin,
-        mint_to_address: S,
+        mint_to_address: impl Into<String>,
     ) -> cosmwasm_std::CosmosMsg {
         tokenfactory_tx::MsgMint {
             sender: sender.into(),
@@ -38,10 +41,10 @@ impl TokenFactory for Neutron {
         .to_msg()
     }
 
-    fn burn<S: Into<String>>(
-        sender: S,
+    fn burn(
+        sender: impl Into<String>,
         amount: cosmwasm_std::Coin,
-        burn_from_address: S,
+        burn_from_address: impl Into<String>,
     ) -> cosmwasm_std::CosmosMsg {
         tokenfactory_tx::MsgBurn {
             sender: sender.into(),
@@ -51,7 +54,11 @@ impl TokenFactory for Neutron {
         .to_msg()
     }
 
-    fn change_admin<S: Into<String>>(sender: S, denom: S, new_admin: S) -> cosmwasm_std::CosmosMsg {
+    fn change_admin(
+        sender: impl Into<String>,
+        denom: impl Into<String>,
+        new_admin: impl Into<String>,
+    ) -> cosmwasm_std::CosmosMsg {
         tokenfactory_tx::MsgChangeAdmin {
             sender: sender.into(),
             denom: denom.into(),
@@ -60,8 +67,8 @@ impl TokenFactory for Neutron {
         .to_msg()
     }
 
-    fn set_denom_metadata<S: Into<String>>(
-        sender: S,
+    fn set_denom_metadata(
+        sender: impl Into<String>,
         metadata: crate::bank::Metadata,
     ) -> cosmwasm_std::CosmosMsg {
         tokenfactory_tx::MsgSetDenomMetadata {
@@ -71,10 +78,10 @@ impl TokenFactory for Neutron {
         .to_msg()
     }
 
-    fn set_before_send_hook<S: Into<String>>(
-        sender: S,
-        denom: S,
-        contract_addr: S,
+    fn set_before_send_hook(
+        sender: impl Into<String>,
+        denom: impl Into<String>,
+        contract_addr: impl Into<String>,
     ) -> cosmwasm_std::CosmosMsg {
         tokenfactory_tx::MsgSetBeforeSendHook {
             sender: sender.into(),
@@ -84,11 +91,11 @@ impl TokenFactory for Neutron {
         .to_msg()
     }
 
-    fn force_transfer<S: Into<String>>(
-        sender: S,
+    fn force_transfer(
+        sender: impl Into<String>,
         amount: cosmwasm_std::Coin,
-        transfer_from_address: S,
-        transfer_to_address: S,
+        transfer_from_address: impl Into<String>,
+        transfer_to_address: impl Into<String>,
     ) -> cosmwasm_std::CosmosMsg {
         tokenfactory_tx::MsgForceTransfer {
             sender: sender.into(),
@@ -99,7 +106,7 @@ impl TokenFactory for Neutron {
         .to_msg()
     }
 
-    fn update_params<S: Into<String>>(authority: S, params: Params) -> cosmwasm_std::CosmosMsg {
+    fn update_params(authority: impl Into<String>, params: Params) -> cosmwasm_std::CosmosMsg {
         tokenfactory_tx::MsgUpdateParams {
             authority: authority.into(),
             params,
@@ -107,10 +114,10 @@ impl TokenFactory for Neutron {
         .to_msg()
     }
 
-    fn query_denom_authority_metadata<S: Into<String>>(
+    fn query_denom_authority_metadata(
         querier: &QuerierWrapper<cosmwasm_std::Empty>,
-        creator: S,
-        subdenom: S,
+        creator: impl Into<String>,
+        subdenom: impl Into<String>,
     ) -> StdResult<QueryDenomAuthorityMetadataResponse> {
         crate::utils::query_decode(
             querier,
@@ -127,9 +134,9 @@ impl TokenFactory for Neutron {
         crate::utils::query_decode(querier, tokenfactory_query::QueryParamsRequest {})
     }
 
-    fn query_denoms_from_creator<S: Into<String>>(
+    fn query_denoms_from_creator(
         querier: &QuerierWrapper<cosmwasm_std::Empty>,
-        creator: S,
+        creator: impl Into<String>,
     ) -> StdResult<QueryDenomsFromCreatorResponse> {
         crate::utils::query_decode(
             querier,
@@ -139,10 +146,10 @@ impl TokenFactory for Neutron {
         )
     }
 
-    fn query_before_send_hook_address_request<S: Into<String>>(
+    fn query_before_send_hook_address_request(
         querier: &QuerierWrapper<cosmwasm_std::Empty>,
-        creator: S,
-        subdenom: S,
+        creator: impl Into<String>,
+        subdenom: impl Into<String>,
     ) -> StdResult<QueryBeforeSendHookAddressResponse> {
         crate::utils::query_decode(
             querier,

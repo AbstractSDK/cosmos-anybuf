@@ -38,7 +38,12 @@ pub struct Failure {
 }
 
 impl Failure {
-    pub fn new<S: Into<String>>(address: S, id: u64, sudo_payload: Vec<u8>, error: S) -> Self {
+    pub fn new(
+        address: impl Into<String>,
+        id: u64,
+        sudo_payload: Vec<u8>,
+        error: impl Into<String>,
+    ) -> Self {
         Self {
             address: address.into(),
             id,
