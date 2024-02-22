@@ -9,53 +9,61 @@ pub trait TokenFactory {
     type QueryDenomsFromCreatorResponse: StargateQueryResponse;
     type QueryBeforeSendHookAddressResponse: StargateQueryResponse;
 
-    fn create_denom<S: Into<String>>(sender: S, subdenom: S) -> CosmosMsg;
+    fn create_denom(sender: impl Into<String>, subdenom: impl Into<String>) -> CosmosMsg;
 
-    fn mint<S: Into<String>>(
-        sender: S,
+    fn mint(
+        sender: impl Into<String>,
         amount: cosmwasm_std::Coin,
-        mint_to_address: S,
+        mint_to_address: impl Into<String>,
     ) -> CosmosMsg;
 
-    fn burn<S: Into<String>>(
-        sender: S,
+    fn burn(
+        sender: impl Into<String>,
         amount: cosmwasm_std::Coin,
-        burn_from_address: S,
+        burn_from_address: impl Into<String>,
     ) -> CosmosMsg;
 
-    fn change_admin<S: Into<String>>(sender: S, denom: S, new_admin: S) -> CosmosMsg;
-
-    fn set_denom_metadata<S: Into<String>>(sender: S, metadata: Metadata) -> CosmosMsg;
-
-    fn set_before_send_hook<S: Into<String>>(sender: S, denom: S, contract_addr: S) -> CosmosMsg;
-
-    fn force_transfer<S: Into<String>>(
-        sender: S,
-        amount: cosmwasm_std::Coin,
-        transfer_from_address: S,
-        transfer_to_address: S,
+    fn change_admin(
+        sender: impl Into<String>,
+        denom: impl Into<String>,
+        new_admin: impl Into<String>,
     ) -> CosmosMsg;
 
-    fn update_params<S: Into<String>>(authority: S, params: Self::Params) -> CosmosMsg;
+    fn set_denom_metadata(sender: impl Into<String>, metadata: Metadata) -> CosmosMsg;
 
-    fn query_denom_authority_metadata<S: Into<String>>(
+    fn set_before_send_hook(
+        sender: impl Into<String>,
+        denom: impl Into<String>,
+        contract_addr: impl Into<String>,
+    ) -> CosmosMsg;
+
+    fn force_transfer(
+        sender: impl Into<String>,
+        amount: cosmwasm_std::Coin,
+        transfer_from_address: impl Into<String>,
+        transfer_to_address: impl Into<String>,
+    ) -> CosmosMsg;
+
+    fn update_params(authority: impl Into<String>, params: Self::Params) -> CosmosMsg;
+
+    fn query_denom_authority_metadata(
         querier: &QuerierWrapper<cosmwasm_std::Empty>,
-        creator: S,
-        subdenom: S,
+        creator: impl Into<String>,
+        subdenom: impl Into<String>,
     ) -> StdResult<Self::QueryDenomAuthorityMetadataResponse>;
 
     fn query_params(
         querier: &QuerierWrapper<cosmwasm_std::Empty>,
     ) -> StdResult<Self::QueryParamsResponse>;
 
-    fn query_denoms_from_creator<S: Into<String>>(
+    fn query_denoms_from_creator(
         querier: &QuerierWrapper<cosmwasm_std::Empty>,
-        creator: S,
+        creator: impl Into<String>,
     ) -> StdResult<Self::QueryDenomsFromCreatorResponse>;
 
-    fn query_before_send_hook_address_request<S: Into<String>>(
+    fn query_before_send_hook_address_request(
         querier: &QuerierWrapper<cosmwasm_std::Empty>,
-        creator: S,
-        subdenom: S,
+        creator: impl Into<String>,
+        subdenom: impl Into<String>,
     ) -> StdResult<Self::QueryBeforeSendHookAddressResponse>;
 }
