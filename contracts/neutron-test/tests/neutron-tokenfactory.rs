@@ -61,9 +61,9 @@ fn setup(handle: Handle) -> NeutronSetup {
     println!("sender: {neutron_sender}");
     let local_juno: Daemon = interchain.chain("juno-1").unwrap();
     // Upload and instantiate
-    let upload_resp = local_juno.upload(&NeutronApp {}).unwrap();
+    let upload_resp = local_neutron.upload(&NeutronApp {}).unwrap();
     let code_id = upload_resp.uploaded_code_id().unwrap();
-    let instantiate_resp = local_juno
+    let instantiate_resp = local_neutron
         .instantiate(
             code_id,
             &cosmwasm_std::Empty {},
