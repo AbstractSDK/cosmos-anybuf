@@ -3,7 +3,7 @@ use crate::{
         neutron::contractmanager::{Failure, Params},
         query::{PageRequest, PageResponse},
     },
-    StargateQuery, StargateQueryResponse,
+    StargateQuery, StargateResponse,
 };
 
 use anybuf::{Anybuf, Bufany};
@@ -36,7 +36,7 @@ impl QueryParamsResponse {
     }
 }
 
-impl StargateQueryResponse for QueryParamsResponse {
+impl StargateResponse for QueryParamsResponse {
     fn from_buf(buf: Vec<u8>) -> Option<Self> {
         let deserialized = Bufany::deserialize(&buf).ok()?;
         let message = deserialized.message(1)?;
@@ -95,7 +95,7 @@ impl QueryFailuresResponse {
     }
 }
 
-impl StargateQueryResponse for QueryFailuresResponse {
+impl StargateResponse for QueryFailuresResponse {
     fn from_buf(buf: Vec<u8>) -> Option<Self> {
         let deserialized = Bufany::deserialize(&buf).ok()?;
         let failures = deserialized

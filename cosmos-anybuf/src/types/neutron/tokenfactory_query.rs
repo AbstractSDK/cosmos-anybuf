@@ -1,6 +1,6 @@
 use crate::{
     types::neutron::tokenfactory::{DenomAuthorityMetadata, Params},
-    StargateQuery, StargateQueryResponse,
+    StargateQuery, StargateResponse,
 };
 use anybuf::{Anybuf, Bufany};
 
@@ -26,7 +26,7 @@ pub struct QueryParamsResponse {
     pub params: Params, // 1
 }
 
-impl StargateQueryResponse for QueryParamsResponse {
+impl StargateResponse for QueryParamsResponse {
     fn from_buf(buf: Vec<u8>) -> Option<Self> {
         let deserialized = Bufany::deserialize(&buf).ok()?;
         let params = deserialized.message(1)?;
@@ -67,7 +67,7 @@ pub struct QueryDenomAuthorityMetadataResponse {
     pub authority_metadata: DenomAuthorityMetadata,
 }
 
-impl StargateQueryResponse for QueryDenomAuthorityMetadataResponse {
+impl StargateResponse for QueryDenomAuthorityMetadataResponse {
     fn from_buf(buf: Vec<u8>) -> Option<Self> {
         let deserialized = Bufany::deserialize(&buf).ok()?;
         let authority_metadata = deserialized.message(1)?;
@@ -103,7 +103,7 @@ pub struct QueryDenomsFromCreatorResponse {
     pub denoms: Vec<String>,
 }
 
-impl StargateQueryResponse for QueryDenomsFromCreatorResponse {
+impl StargateResponse for QueryDenomsFromCreatorResponse {
     fn from_buf(buf: Vec<u8>) -> Option<Self> {
         let deserialized = Bufany::deserialize(&buf).ok()?;
         let denoms = deserialized.repeated_string(1).ok()?;
@@ -142,7 +142,7 @@ pub struct QueryBeforeSendHookAddressResponse {
     pub contract_addr: String,
 }
 
-impl StargateQueryResponse for QueryBeforeSendHookAddressResponse {
+impl StargateResponse for QueryBeforeSendHookAddressResponse {
     fn from_buf(buf: Vec<u8>) -> Option<Self> {
         let deserialized = Bufany::deserialize(&buf).ok()?;
         let contract_addr = deserialized.string(1)?;

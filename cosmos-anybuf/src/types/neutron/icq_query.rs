@@ -1,5 +1,5 @@
 use anybuf::Anybuf;
-use crate::{StargateQuery, StargateQueryResponse, Params, RegisteredQuery, QueryResult, PageRequest, PageResponse};
+use crate::{StargateQuery, StargateResponse, Params, RegisteredQuery, QueryResult, PageRequest, PageResponse};
 
 pub struct QueryParamsRequest;
 
@@ -17,7 +17,7 @@ pub struct QueryParamsResponse {
     pub params: Params,
 }
 
-impl StargateQueryResponse for QueryParamsResponse {
+impl StargateResponse for QueryParamsResponse {
     fn from_buf(buf: Vec<u8>) -> Self {
         let anybuf = Anybuf::from(buf);
         Self {
@@ -55,7 +55,7 @@ pub struct QueryRegisteredQueriesResponse {
     pub pagination: Option<PageResponse>,
 }
 
-impl StargateQueryResponse for QueryRegisteredQueriesResponse {
+impl StargateResponse for QueryRegisteredQueriesResponse {
     fn from_buf(buf: Vec<u8>) -> Self {
         let anybuf = Anybuf::from(buf);
         Self {
@@ -83,7 +83,7 @@ pub struct QueryRegisteredQueryResponse {
     pub registered_query: RegisteredQuery,
 }
 
-impl StargateQueryResponse for QueryRegisteredQueryResponse {
+impl StargateResponse for QueryRegisteredQueryResponse {
     fn from_buf(buf: Vec<u8>) -> Self {
         let anybuf = Anybuf::from(buf);
         Self {
@@ -110,7 +110,7 @@ pub struct QueryRegisteredQueryResultResponse {
     pub result: QueryResult,
 }
 
-impl StargateQueryResponse for QueryRegisteredQueryResultResponse {
+impl StargateResponse for QueryRegisteredQueryResultResponse {
     fn from_buf(buf: Vec<u8>) -> Self {
         let anybuf = Anybuf::from(buf);
         Self {
@@ -137,7 +137,7 @@ pub struct QueryLastRemoteHeightResponse {
     pub height: u64,
 }
 
-impl StargateQueryResponse for QueryLastRemoteHeightResponse {
+impl StargateResponse for QueryLastRemoteHeightResponse {
     fn from_buf(buf: Vec<u8>) -> Self {
         let anybuf = Anybuf::from(buf);
         Self {

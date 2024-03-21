@@ -28,7 +28,7 @@ pub trait StargateQuery: Sized {
     }
 }
 
-pub trait StargateQueryResponse: Sized {
+pub trait StargateResponse: Sized {
     /// Deserialize from protobuf bytes.
     fn from_buf(buf: Vec<u8>) -> Option<Self>;
 }
