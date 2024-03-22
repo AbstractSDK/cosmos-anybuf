@@ -8,3 +8,4 @@ pub mod query;
 pub mod tendermint;
 pub mod timestamp;
 pub mod tokenfactory;
+pub mod ibc;

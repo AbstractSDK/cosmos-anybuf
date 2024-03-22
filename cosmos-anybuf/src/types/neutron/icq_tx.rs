@@ -1,10 +1,7 @@
-use crate::{
-    types::tendermint::{Proof, ProofOps, ResponseDeliverTx},
-    StargateMsg, StargateResponse,
-};
+use crate::{StargateMsg, StargateResponse};
 use anybuf::{Anybuf, Bufany};
 
-use super::{interchainqueries::Params, kvkey::KVKey};
+use super::interchainqueries::{KVKey, Params};
 
 pub struct MsgRegisterInterchainQuery {
     pub query_type: String,          // 1
@@ -110,64 +107,4 @@ impl StargateMsg for MsgUpdateParams {
             .append_message(2, &self.params.to_anybuf())
             .into_vec()
     }
-}
-
-// SUDO MESSAGES
-// TODO: how are those supposed to be used with anybuf?
-
-pub struct MsgSubmitQueryResult {
-    pub query_id: u64,       // 1
-    pub sender: String,      // 2
-    pub client_id: String,   // 3
-    pub result: QueryResult, // 4
-}
-
-pub struct QueryResult {
-    pub kv_results: Vec<StorageValue>, // 1
-    pub block: Block,                  // 2
-    pub height: u64,                   // 3
-    pub revision: u64,                 // 4
-    pub allow_kv_callbacks: bool,      // 5
-}
-
-pub struct StorageValue {
-    // is the substore name (acc, staking, etc.)
-    pub storage_prefix: String, //  1
-
-    // is the key in IAVL store
-    pub key: Vec<u8>, // 2
-
-    // is the value in IAVL store
-    pub value: Vec<u8>, // 3
-
-    // is the Merkle Proof which proves existence of key-value pair in IAVL
-    // storage
-    pub proof: ProofOps, // 4
-}
-
-pub struct Block {
-    // We need to know block X+1 to verify response of transaction for block X
-    // since LastResultsHash is root hash of all results from the txs from the
-    // previous block
-    pub next_block_header: Anybuf, // 1
-
-    // We need to know block X to verify inclusion of transaction for block X
-    pub header: Anybuf, // 2
-
-    pub tx: TxValue, //  3
-}
-
-pub struct TxValue {
-    pub response: ResponseDeliverTx, // 1
-
-    // is the Merkle Proof which proves existence of response in block with height
-    // next_block_header.Height
-    pub delivery_proof: Proof, // 2
-
-    // is the Merkle Proof which proves existence of data in block with height
-    // header.Height
-    pub inclusion_proof: Proof, // 3
-
-    // is body of the transaction
-    pub data: Vec<u8>, // 4
 }

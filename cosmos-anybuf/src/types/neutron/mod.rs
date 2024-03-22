@@ -26,9 +26,6 @@ pub mod interchaintxs;
 
 // interchain queries
 // https://docs.neutron.org/neutron/modules/interchain-queries/overview
-// mod icq_query;
+mod icq_query;
 mod icq_tx;
 mod interchainqueries;
-
-// Types
-pub mod kvkey;
