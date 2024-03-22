@@ -103,7 +103,10 @@ impl StargateResponse for QueryFailuresResponse {
             .into_iter()
             .filter_map(Failure::from_buf)
             .collect();
-        let pagination = deserialized.message(2).map(PageResponse::from_bufany).flatten();
+        let pagination = deserialized
+            .message(2)
+            .map(PageResponse::from_bufany)
+            .flatten();
         Some(Self {
             failures,
             pagination,
