@@ -1,3 +1,6 @@
+use cosmwasm_schema::serde::{Serialize, Serializer};
+use cosmwasm_std::to_json_string;
+
 use crate::interfaces::InterChainQueries;
 
 use crate::types::neutron::{icq_query, icq_tx, interchainqueries};
@@ -18,14 +21,14 @@ impl InterChainQueries for Neutron {
         sender: impl Into<String>,
         query_type: impl Into<String>,
         keys: Vec<crate::types::neutron::interchainqueries::KVKey>,
-        transactions_filter: impl Into<String>,
+        transactions_filter: String,
         connection_id: impl Into<String>,
         update_period: u64,
     ) -> cosmwasm_std::CosmosMsg {
         icq_tx::MsgRegisterInterchainQuery {
             query_type: query_type.into(),
             keys,
-            transactions_filter: transactions_filter.into(),
+            transactions_filter,
             connection_id: connection_id.into(),
             update_period,
             sender: sender.into(),
@@ -55,7 +58,7 @@ impl InterChainQueries for Neutron {
             query_id: query_id.into(),
             new_keys,
             new_update_period,
-            new_transactions_filter: new_transactions_filter.into(),
+            new_transactions_filter,
             sender: sender.into(),
         }
         .to_msg()
