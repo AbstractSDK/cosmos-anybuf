@@ -106,20 +106,6 @@ pub struct RegisteredQuery {
 
 impl RegisteredQuery {
     pub fn to_anybuf(&self) -> Anybuf {
-        let Self {
-            id,
-            owner,
-            query_type,
-            keys,
-            transactions_filter,
-            connection_id,
-            update_period,
-            last_submitted_result_local_height,
-            last_submitted_result_remote_height,
-            deposit,
-            submit_timeout,
-            registered_at_height,
-        } = self;
         let keys: Vec<Anybuf> = self.keys.iter().map(KVKey::to_anybuf).collect();
         let deposit = coin::to_repeated_message(&self.deposit);
         Anybuf::new()
@@ -182,16 +168,6 @@ impl RegisteredQuery {
             registered_at_height,
         })
     }
-}
-
-// SUDO MESSAGES
-// TODO: how are those supposed to be used with anybuf?
-
-pub struct MsgSubmitQueryResult {
-    pub query_id: u64,       // 1
-    pub sender: String,      // 2
-    pub client_id: String,   // 3
-    pub result: QueryResult, // 4
 }
 
 pub struct QueryResult {
@@ -264,10 +240,10 @@ impl StorageValue {
 //     // We need to know block X+1 to verify response of transaction for block X
 //     // since LastResultsHash is root hash of all results from the txs from the
 //     // previous block
-//     pub next_block_header: Anybuf, // 1
+//     pub next_block_header: Any, // 1
 
 //     // We need to know block X to verify inclusion of transaction for block X
-//     pub header: Anybuf, // 2
+//     pub header: Any, // 2
 
 //     pub tx: TxValue, //  3
 // }

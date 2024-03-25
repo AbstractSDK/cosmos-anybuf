@@ -7,7 +7,7 @@ use super::Neutron;
 
 impl InterChainQueries for Neutron {
     type Params = interchainqueries::Params;
-    type RegisterInterchainQueryResponse = icq_tx::RegisterInterchainQueryResponse;
+    type MsgRegisterInterchainQueryResponse = icq_tx::MsgRegisterInterchainQueryResponse;
     type QueryParamsResponse = icq_query::QueryParamsResponse;
     type QueryRegisteredQueriesResponse = icq_query::QueryRegisteredQueriesResponse;
     type QueryRegisteredQueryResponse = icq_query::QueryRegisteredQueryResponse;

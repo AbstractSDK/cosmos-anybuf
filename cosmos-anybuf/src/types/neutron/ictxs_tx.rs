@@ -3,7 +3,7 @@ use crate::{
         coin::Coin,
         neutron::{feerefunder::Fee, interchaintxs::Params},
     },
-    StargateMsg, StargateResponse,
+    Any, StargateMsg, StargateResponse,
 };
 use anybuf::{Anybuf, Bufany};
 
@@ -33,9 +33,9 @@ impl StargateMsg for MsgRegisterInterchainAccount {
 
 pub struct MsgSubmitTx {
     pub from_address: String,          // 1
-    pub interchain_account_id: String, //2
+    pub interchain_account_id: String, // 2
     pub connection_id: String,         // 3
-    pub msgs: Vec<Anybuf>,             // 4
+    pub msgs: Vec<Any>,                // 4
     pub memo: String,                  // 5
     pub timeout: u64,                  // 6
     pub fee: Fee,                      // 7
@@ -47,11 +47,12 @@ impl StargateMsg for MsgSubmitTx {
     }
 
     fn to_buf(&self) -> Vec<u8> {
+        let msgs: Vec<Anybuf> = self.msgs.iter().map(Any::to_anybuf).collect();
         Anybuf::new()
             .append_string(1, &self.from_address)
             .append_string(2, &self.interchain_account_id)
             .append_string(3, &self.connection_id)
-            .append_repeated_message(4, &self.msgs)
+            .append_repeated_message(4, &msgs)
             .append_string(5, &self.memo)
             .append_uint64(6, self.timeout)
             .append_bytes(7, self.fee.to_buf())

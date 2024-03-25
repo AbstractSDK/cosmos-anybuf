@@ -6,7 +6,7 @@ use crate::types::query::PageRequest;
 use crate::types::neutron::interchainqueries::KVKey;
 pub trait InterChainQueries {
     type Params;
-    type RegisterInterchainQueryResponse: StargateResponse;
+    type MsgRegisterInterchainQueryResponse: StargateResponse;
     type QueryParamsResponse: StargateResponse;
     type QueryRegisteredQueriesResponse: StargateResponse;
     type QueryRegisteredQueryResponse: StargateResponse;
@@ -24,8 +24,8 @@ pub trait InterChainQueries {
 
     fn parse_register_interchain_query_response(
         data: cosmwasm_std::Binary,
-    ) -> StdResult<Self::RegisterInterchainQueryResponse> {
-        Self::RegisterInterchainQueryResponse::from_buf(data.0).ok_or(cosmwasm_std::StdError::ParseErr {
+    ) -> StdResult<Self::MsgRegisterInterchainQueryResponse> {
+        Self::MsgRegisterInterchainQueryResponse::from_buf(data.0).ok_or(cosmwasm_std::StdError::ParseErr {
             target_type: stringify!(InterchainQueryResponse).to_owned(),
             msg: "Failed to deserialize proto".to_owned(),
         })

@@ -1,4 +1,27 @@
+use anybuf::Anybuf;
 use cosmwasm_std::{CosmosMsg, Empty, QueryRequest};
+
+pub struct Any {
+    pub type_url: String, // 1
+    pub value: Vec<u8>,   // 2
+}
+
+impl Any {
+    pub fn to_anybuf(&self) -> Anybuf {
+        Anybuf::new()
+            .append_string(1, &self.type_url)
+            .append_bytes(2, &self.value)
+    }
+}
+
+impl<M: StargateMsg> From<M> for Any {
+    fn from(value: M) -> Self {
+        Self {
+            type_url: M::url().to_owned(),
+            value: value.to_buf(),
+        }
+    }
+}
 
 pub trait StargateMsg: Sized {
     /// URL for the gRPC endpoint.

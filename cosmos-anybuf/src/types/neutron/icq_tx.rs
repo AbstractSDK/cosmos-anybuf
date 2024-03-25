@@ -31,11 +31,11 @@ impl StargateMsg for MsgRegisterInterchainQuery {
     }
 }
 
-pub struct RegisterInterchainQueryResponse {
+pub struct MsgRegisterInterchainQueryResponse {
     pub id: u64, // 1
 }
 
-impl StargateResponse for RegisterInterchainQueryResponse {
+impl StargateResponse for MsgRegisterInterchainQueryResponse {
     fn from_buf(buf: Vec<u8>) -> Option<Self> {
         let buf = Bufany::deserialize(&buf).ok()?;
         let id = buf.uint64(1)?;

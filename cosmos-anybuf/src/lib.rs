@@ -1,7 +1,7 @@
 pub(crate) mod anybuf_interface;
 pub(crate) mod types;
 
-pub(crate) use anybuf_interface::*;
+pub use anybuf_interface::*;
 
 pub(crate) mod utils;
 
