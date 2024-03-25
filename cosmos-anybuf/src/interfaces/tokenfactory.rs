@@ -3,12 +3,15 @@ use cosmwasm_std::{CosmosMsg, QuerierWrapper, StdResult};
 use crate::{anybuf_interface::StargateResponse, types::bank::Metadata};
 
 pub trait TokenFactory {
+    // Params
     type Params;
+    // Msg responses
+    type MsgCreateDenomResponse: StargateResponse;
+    // Query Responses
     type QueryDenomAuthorityMetadataResponse: StargateResponse;
     type QueryParamsResponse: StargateResponse;
     type QueryDenomsFromCreatorResponse: StargateResponse;
     type QueryBeforeSendHookAddressResponse: StargateResponse;
-    type MsgCreateDenomResponse: StargateResponse;
 
     fn create_denom(sender: impl Into<String>, subdenom: impl Into<String>) -> CosmosMsg;
 

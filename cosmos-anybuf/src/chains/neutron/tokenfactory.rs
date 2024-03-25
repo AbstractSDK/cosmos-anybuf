@@ -12,12 +12,11 @@ use super::Neutron;
 
 impl TokenFactory for Neutron {
     type Params = Params;
+    type MsgCreateDenomResponse = tokenfactory_tx::MsgCreateDenomResponse;
     type QueryDenomAuthorityMetadataResponse = QueryDenomAuthorityMetadataResponse;
     type QueryParamsResponse = QueryParamsResponse;
     type QueryDenomsFromCreatorResponse = QueryDenomsFromCreatorResponse;
     type QueryBeforeSendHookAddressResponse = QueryBeforeSendHookAddressResponse;
-    /// Response type for `create_denom`
-    type MsgCreateDenomResponse = tokenfactory_tx::MsgCreateDenomResponse;
 
     fn create_denom(
         sender: impl Into<String>,

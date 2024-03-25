@@ -1,6 +1,3 @@
-use cosmwasm_schema::serde::{Serialize, Serializer};
-use cosmwasm_std::to_json_string;
-
 use crate::interfaces::InterChainQueries;
 
 use crate::types::neutron::{icq_query, icq_tx, interchainqueries};

@@ -45,8 +45,11 @@ pub struct TransactionFilterItem {
 }
 
 pub trait InterChainQueries {
+    // Params
     type Params;
+    // Msg Responses
     type MsgRegisterInterchainQueryResponse: StargateResponse;
+    // Query Responses
     type QueryParamsResponse: StargateResponse;
     type QueryRegisteredQueriesResponse: StargateResponse;
     type QueryRegisteredQueryResponse: StargateResponse;

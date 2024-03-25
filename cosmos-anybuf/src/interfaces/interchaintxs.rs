@@ -5,8 +5,11 @@ use crate::neutron::IbcFee;
 use crate::Any;
 
 pub trait InterchainTxs {
+    // Params
     type Params;
+    // Msg Responses
     type MsgSubmitTxResponse: StargateResponse;
+    // Query Responses
     type QueryParamsResponse: StargateResponse;
     type QueryInterchainAccountAddressResponse: StargateResponse;
 
