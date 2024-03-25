@@ -9,4 +9,4 @@ pub mod chains;
 pub mod interfaces;
 
 pub use chains::neutron;
-pub use types::bank;
+pub use types::{bank, query};

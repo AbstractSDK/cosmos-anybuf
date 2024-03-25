@@ -8,8 +8,18 @@ pub trait TokenFactory {
     type QueryParamsResponse: StargateResponse;
     type QueryDenomsFromCreatorResponse: StargateResponse;
     type QueryBeforeSendHookAddressResponse: StargateResponse;
+    type MsgCreateDenomResponse: StargateResponse;
 
     fn create_denom(sender: impl Into<String>, subdenom: impl Into<String>) -> CosmosMsg;
+
+    fn parse_create_denom_response(
+        data: cosmwasm_std::Binary,
+    ) -> StdResult<Self::MsgCreateDenomResponse> {
+        Self::MsgCreateDenomResponse::from_buf(data.0).ok_or(cosmwasm_std::StdError::ParseErr {
+            target_type: stringify!(MsgCreateDenomResponse).to_owned(),
+            msg: "Failed to deserialize proto".to_owned(),
+        })
+    }
 
     fn mint(
         sender: impl Into<String>,

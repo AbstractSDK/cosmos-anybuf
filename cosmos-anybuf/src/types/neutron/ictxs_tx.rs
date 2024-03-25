@@ -1,30 +1,17 @@
 use crate::{
-    types::{coin::Coin, neutron::feerefunder::Fee, neutron::interchaintxs::Params},
-    StargateMsg,
+    types::{
+        coin::Coin,
+        neutron::{feerefunder::Fee, interchaintxs::Params},
+    },
+    StargateMsg, StargateResponse,
 };
-use anybuf::Anybuf;
+use anybuf::{Anybuf, Bufany};
 
 pub struct MsgRegisterInterchainAccount {
-    pub from_address: String,
-    pub connection_id: String,
-    pub interchain_account_id: String,
-    pub register_fee: Vec<Coin>,
-}
-
-impl MsgRegisterInterchainAccount {
-    pub fn new(
-        from_address: impl Into<String>,
-        connection_id: impl Into<String>,
-        interchain_account_id: impl Into<String>,
-        register_fee: Vec<Coin>,
-    ) -> Self {
-        Self {
-            from_address: from_address.into(),
-            connection_id: connection_id.into(),
-            interchain_account_id: interchain_account_id.into(),
-            register_fee,
-        }
-    }
+    pub from_address: String,          // 1
+    pub connection_id: String,         // 2
+    pub interchain_account_id: String, // 3
+    pub register_fee: Vec<Coin>,       // 4
 }
 
 impl StargateMsg for MsgRegisterInterchainAccount {
@@ -45,35 +32,13 @@ impl StargateMsg for MsgRegisterInterchainAccount {
 }
 
 pub struct MsgSubmitTx {
-    pub from_address: String,
-    pub interchain_account_id: String,
-    pub connection_id: String,
-    pub msgs: Vec<Anybuf>, // Assuming Anybuf is used for google.protobuf.Any
-    pub memo: String,
-    pub timeout: u64,
-    pub fee: Fee,
-}
-
-impl MsgSubmitTx {
-    pub fn new(
-        from_address: impl Into<String>,
-        interchain_account_id: impl Into<String>,
-        connection_id: impl Into<String>,
-        msgs: Vec<Anybuf>,
-        memo: impl Into<String>,
-        timeout: u64,
-        fee: Fee,
-    ) -> Self {
-        Self {
-            from_address: from_address.into(),
-            interchain_account_id: interchain_account_id.into(),
-            connection_id: connection_id.into(),
-            msgs,
-            memo: memo.into(),
-            timeout,
-            fee,
-        }
-    }
+    pub from_address: String,          // 1
+    pub interchain_account_id: String, //2
+    pub connection_id: String,         // 3
+    pub msgs: Vec<Anybuf>,             // 4
+    pub memo: String,                  // 5
+    pub timeout: u64,                  // 6
+    pub fee: Fee,                      // 7
 }
 
 impl StargateMsg for MsgSubmitTx {
@@ -94,18 +59,27 @@ impl StargateMsg for MsgSubmitTx {
     }
 }
 
+pub struct MsgSubmitTxResponse {
+    pub sequence_id: u64, // 1
+    pub channel: String,  // 2
+}
+
+impl StargateResponse for MsgSubmitTxResponse {
+    fn from_buf(buf: Vec<u8>) -> Option<Self> {
+        let deserialized = Bufany::deserialize(&buf).ok()?;
+        let sequence_id = deserialized.uint64(1)?;
+        let channel = deserialized.string(2)?;
+
+        Some(Self {
+            sequence_id,
+            channel,
+        })
+    }
+}
+
 pub struct MsgUpdateParams {
     pub authority: String,
     pub params: Params,
-}
-
-impl MsgUpdateParams {
-    pub fn new(authority: impl Into<String>, params: Params) -> Self {
-        Self {
-            authority: authority.into(),
-            params,
-        }
-    }
 }
 
 impl StargateMsg for MsgUpdateParams {

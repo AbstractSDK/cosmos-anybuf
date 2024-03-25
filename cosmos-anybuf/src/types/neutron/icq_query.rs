@@ -19,7 +19,7 @@ impl StargateQuery for QueryParamsRequest {
 }
 
 pub struct QueryParamsResponse {
-    pub params: Params,
+    pub params: Params, // 1
 }
 
 impl StargateResponse for QueryParamsResponse {
@@ -33,9 +33,9 @@ impl StargateResponse for QueryParamsResponse {
 }
 
 pub struct QueryRegisteredQueriesRequest {
-    pub owners: Vec<String>,
-    pub connection_id: String,
-    pub pagination: Option<PageRequest>,
+    pub owners: Vec<String>,             // 1
+    pub connection_id: String,           // 2
+    pub pagination: Option<PageRequest>, // 3
 }
 
 impl StargateQuery for QueryRegisteredQueriesRequest {
@@ -58,8 +58,8 @@ impl StargateQuery for QueryRegisteredQueriesRequest {
 }
 
 pub struct QueryRegisteredQueriesResponse {
-    pub registered_queries: Vec<RegisteredQuery>,
-    pub pagination: Option<PageResponse>,
+    pub registered_queries: Vec<RegisteredQuery>, // 1
+    pub pagination: Option<PageResponse>,         // 2
 }
 
 impl StargateResponse for QueryRegisteredQueriesResponse {
@@ -80,7 +80,7 @@ impl StargateResponse for QueryRegisteredQueriesResponse {
 }
 
 pub struct QueryRegisteredQueryRequest {
-    pub query_id: u64,
+    pub query_id: u64, // 1
 }
 
 impl StargateQuery for QueryRegisteredQueryRequest {
@@ -94,7 +94,7 @@ impl StargateQuery for QueryRegisteredQueryRequest {
 }
 
 pub struct QueryRegisteredQueryResponse {
-    pub registered_query: RegisteredQuery,
+    pub registered_query: RegisteredQuery, // 1
 }
 
 impl StargateResponse for QueryRegisteredQueryResponse {
@@ -106,7 +106,7 @@ impl StargateResponse for QueryRegisteredQueryResponse {
 }
 
 pub struct QueryRegisteredQueryResultRequest {
-    pub query_id: u64,
+    pub query_id: u64, // 1
 }
 
 impl StargateQuery for QueryRegisteredQueryResultRequest {
@@ -120,7 +120,7 @@ impl StargateQuery for QueryRegisteredQueryResultRequest {
 }
 
 pub struct QueryRegisteredQueryResultResponse {
-    pub result: QueryResult,
+    pub result: QueryResult, // 1
 }
 
 impl StargateResponse for QueryRegisteredQueryResultResponse {
@@ -133,7 +133,7 @@ impl StargateResponse for QueryRegisteredQueryResultResponse {
 }
 
 pub struct QueryLastRemoteHeight {
-    pub connection_id: String,
+    pub connection_id: String, // 1
 }
 
 impl StargateQuery for QueryLastRemoteHeight {
@@ -149,7 +149,7 @@ impl StargateQuery for QueryLastRemoteHeight {
 }
 
 pub struct QueryLastRemoteHeightResponse {
-    pub height: u64,
+    pub height: u64, // 1
 }
 
 impl StargateResponse for QueryLastRemoteHeightResponse {

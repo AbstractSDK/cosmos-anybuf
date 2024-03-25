@@ -26,6 +26,6 @@ pub mod interchaintxs;
 
 // interchain queries
 // https://docs.neutron.org/neutron/modules/interchain-queries/overview
-mod icq_query;
-mod icq_tx;
-mod interchainqueries;
+pub mod icq_query;
+pub mod icq_tx;
+pub mod interchainqueries;
