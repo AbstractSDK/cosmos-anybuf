@@ -2,10 +2,10 @@ use cosmwasm_std::{
     to_json_vec, ContractResult, QuerierWrapper, StdError, StdResult, SystemResult,
 };
 
-use crate::anybuf_interface::{StargateQuery, StargateQueryResponse};
+use crate::anybuf_interface::{StargateQuery, StargateResponse};
 
 /// Queries StargateQuery and decodes it to the StargateQueryResponse type
-pub fn query_decode<R: StargateQueryResponse, Q: StargateQuery>(
+pub fn query_decode<R: StargateResponse, Q: StargateQuery>(
     querier: &QuerierWrapper,
     query: Q,
 ) -> StdResult<R> {

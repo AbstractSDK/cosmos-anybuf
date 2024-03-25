@@ -1,5 +1,10 @@
-use anybuf::Anybuf;
-use crate::{StargateQuery, StargateQueryResponse, Params, RegisteredQuery, QueryResult, PageRequest, PageResponse};
+use crate::{
+    types::query::{PageRequest, PageResponse},
+    StargateQuery, StargateResponse,
+};
+use anybuf::{Anybuf, Bufany};
+
+use super::interchainqueries::{Params, QueryResult, RegisteredQuery};
 
 pub struct QueryParamsRequest;
 
@@ -17,12 +22,13 @@ pub struct QueryParamsResponse {
     pub params: Params,
 }
 
-impl StargateQueryResponse for QueryParamsResponse {
-    fn from_buf(buf: Vec<u8>) -> Self {
-        let anybuf = Anybuf::from(buf);
-        Self {
-            params: Params::from_buf(anybuf.get_bytes(1).unwrap()),
-        }
+impl StargateResponse for QueryParamsResponse {
+    fn from_buf(buf: Vec<u8>) -> Option<Self> {
+        let deserialized = Bufany::deserialize(&buf).ok()?;
+        let params = deserialized.message(1)?;
+        Some(Self {
+            params: Params::from_bufany(params)?,
+        })
     }
 }
 
@@ -38,15 +44,16 @@ impl StargateQuery for QueryRegisteredQueriesRequest {
     }
 
     fn to_buf(&self) -> Vec<u8> {
-        let mut anybuf = Anybuf::new();
-        for owner in &self.owners {
-            anybuf.append_string(1, owner);
-        }
-        anybuf.append_string(2, &self.connection_id);
-        if let Some(pagination) = &self.pagination {
-            anybuf.append_bytes(3, &pagination.to_buf());
-        }
-        anybuf.into_vec()
+        let pagination_message = self
+            .pagination
+            .as_ref()
+            .map(PageRequest::to_anybuf)
+            .unwrap_or_default();
+        Anybuf::new()
+            .append_repeated_string(1, &self.owners)
+            .append_string(2, &self.connection_id)
+            .append_message(3, &pagination_message)
+            .into_vec()
     }
 }
 
@@ -55,13 +62,20 @@ pub struct QueryRegisteredQueriesResponse {
     pub pagination: Option<PageResponse>,
 }
 
-impl StargateQueryResponse for QueryRegisteredQueriesResponse {
-    fn from_buf(buf: Vec<u8>) -> Self {
-        let anybuf = Anybuf::from(buf);
-        Self {
-            registered_queries: anybuf.get_repeated_bytes(1).unwrap().iter().map(|b| RegisteredQuery::from_buf(b.to_vec())).collect(),
-            pagination: anybuf.get_bytes(2).map(|b| PageResponse::from_buf(b.to_vec())),
-        }
+impl StargateResponse for QueryRegisteredQueriesResponse {
+    fn from_buf(buf: Vec<u8>) -> Option<Self> {
+        let deserialized = Bufany::deserialize(&buf).ok()?;
+        let registered_queries_bytes = deserialized.repeated_bytes(1)?;
+        let registered_queries = registered_queries_bytes
+            .into_iter()
+            .map(RegisteredQuery::from_buf)
+            .collect::<Option<_>>()?;
+        let pagination_buf = deserialized.message(2);
+        let pagination = pagination_buf.map(PageResponse::from_bufany).flatten();
+        Some(Self {
+            registered_queries,
+            pagination,
+        })
     }
 }
 
@@ -75,7 +89,7 @@ impl StargateQuery for QueryRegisteredQueryRequest {
     }
 
     fn to_buf(&self) -> Vec<u8> {
-        Anybuf::new().append_u64(1, self.query_id).into_vec()
+        Anybuf::new().append_uint64(1, self.query_id).into_vec()
     }
 }
 
@@ -83,12 +97,11 @@ pub struct QueryRegisteredQueryResponse {
     pub registered_query: RegisteredQuery,
 }
 
-impl StargateQueryResponse for QueryRegisteredQueryResponse {
-    fn from_buf(buf: Vec<u8>) -> Self {
-        let anybuf = Anybuf::from(buf);
-        Self {
-            registered_query: RegisteredQuery::from_buf(anybuf.get_bytes(1).unwrap()),
-        }
+impl StargateResponse for QueryRegisteredQueryResponse {
+    fn from_buf(buf: Vec<u8>) -> Option<Self> {
+        let bufany = Bufany::deserialize(&buf).ok()?;
+        let registered_query = RegisteredQuery::from_bufany(bufany)?;
+        Some(Self { registered_query })
     }
 }
 
@@ -102,7 +115,7 @@ impl StargateQuery for QueryRegisteredQueryResultRequest {
     }
 
     fn to_buf(&self) -> Vec<u8> {
-        Anybuf::new().append_u64(1, self.query_id).into_vec()
+        Anybuf::new().append_uint64(1, self.query_id).into_vec()
     }
 }
 
@@ -110,12 +123,12 @@ pub struct QueryRegisteredQueryResultResponse {
     pub result: QueryResult,
 }
 
-impl StargateQueryResponse for QueryRegisteredQueryResultResponse {
-    fn from_buf(buf: Vec<u8>) -> Self {
-        let anybuf = Anybuf::from(buf);
-        Self {
-            result: QueryResult::from_buf(anybuf.get_bytes(1).unwrap()),
-        }
+impl StargateResponse for QueryRegisteredQueryResultResponse {
+    fn from_buf(buf: Vec<u8>) -> Option<Self> {
+        let buf = Bufany::deserialize(&buf).ok()?;
+        let result_message = buf.message(1)?;
+        let result = QueryResult::from_bufany(result_message)?;
+        Some(Self { result })
     }
 }
 
@@ -129,7 +142,9 @@ impl StargateQuery for QueryLastRemoteHeight {
     }
 
     fn to_buf(&self) -> Vec<u8> {
-        Anybuf::new().append_string(1, &self.connection_id).into_vec()
+        Anybuf::new()
+            .append_string(1, &self.connection_id)
+            .into_vec()
     }
 }
 
@@ -137,11 +152,10 @@ pub struct QueryLastRemoteHeightResponse {
     pub height: u64,
 }
 
-impl StargateQueryResponse for QueryLastRemoteHeightResponse {
-    fn from_buf(buf: Vec<u8>) -> Self {
-        let anybuf = Anybuf::from(buf);
-        Self {
-            height: anybuf.get_u64(1).unwrap(),
-        }
+impl StargateResponse for QueryLastRemoteHeightResponse {
+    fn from_buf(buf: Vec<u8>) -> Option<Self> {
+        let deserialized = Bufany::deserialize(&buf).ok()?;
+        let height = deserialized.uint64(1)?;
+        Some(Self { height })
     }
 }

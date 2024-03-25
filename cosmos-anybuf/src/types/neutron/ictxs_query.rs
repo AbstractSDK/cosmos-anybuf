@@ -1,4 +1,4 @@
-use crate::{types::neutron::interchaintxs::Params, StargateQuery, StargateQueryResponse};
+use crate::{types::neutron::interchainqueries::Params, StargateQuery, StargateResponse};
 use anybuf::{Anybuf, Bufany};
 
 pub struct QueryParamsRequest {}
@@ -23,7 +23,7 @@ pub struct QueryParamsResponse {
     pub params: Params,
 }
 
-impl StargateQueryResponse for QueryParamsResponse {
+impl StargateResponse for QueryParamsResponse {
     fn from_buf(buf: Vec<u8>) -> Option<Self> {
         let deserialized = Bufany::deserialize(&buf).ok()?;
         let params = deserialized.message(1)?;
@@ -71,7 +71,7 @@ pub struct QueryInterchainAccountAddressResponse {
     pub interchain_account_address: String,
 }
 
-impl StargateQueryResponse for QueryInterchainAccountAddressResponse {
+impl StargateResponse for QueryInterchainAccountAddressResponse {
     fn from_buf(buf: Vec<u8>) -> Option<Self> {
         let deserialized = Bufany::deserialize(&buf).ok()?;
         let interchain_account_address = deserialized.string(1)?;

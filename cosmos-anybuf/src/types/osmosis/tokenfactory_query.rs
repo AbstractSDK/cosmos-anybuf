@@ -1,6 +1,6 @@
 use crate::{
     types::osmosis::tokenfactory::{DenomAuthorityMetadata, Params},
-    StargateQuery, StargateQueryResponse,
+    StargateQuery, StargateResponse,
 };
 
 use anybuf::{Anybuf, Bufany};
@@ -27,7 +27,7 @@ pub struct QueryParamsResponse {
     pub params: Params,
 }
 
-impl StargateQueryResponse for QueryParamsResponse {
+impl StargateResponse for QueryParamsResponse {
     fn from_buf(buf: Vec<u8>) -> Option<Self> {
         let deserialized = Bufany::deserialize(&buf).ok()?;
         let params = deserialized.message(1)?;
@@ -63,7 +63,7 @@ pub struct QueryDenomAuthorityMetadataResponse {
     pub authority_metadata: DenomAuthorityMetadata,
 }
 
-impl StargateQueryResponse for QueryDenomAuthorityMetadataResponse {
+impl StargateResponse for QueryDenomAuthorityMetadataResponse {
     fn from_buf(buf: Vec<u8>) -> Option<Self> {
         let deserialized = Bufany::deserialize(&buf).ok()?;
         let authority_metadata = deserialized.message(1)?;
