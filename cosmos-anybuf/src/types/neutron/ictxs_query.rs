@@ -3,12 +3,6 @@ use anybuf::{Anybuf, Bufany};
 
 pub struct QueryParamsRequest {}
 
-impl QueryParamsRequest {
-    pub fn new() -> Self {
-        Self {}
-    }
-}
-
 impl StargateQuery for QueryParamsRequest {
     fn url() -> &'static str {
         "/neutron.interchaintxs.v1.QueryParamsRequest"
@@ -37,20 +31,6 @@ pub struct QueryInterchainAccountAddressRequest {
     pub owner_address: String,
     pub interchain_account_id: String,
     pub connection_id: String,
-}
-
-impl QueryInterchainAccountAddressRequest {
-    pub fn new(
-        owner_address: impl Into<String>,
-        interchain_account_id: impl Into<String>,
-        connection_id: impl Into<String>,
-    ) -> Self {
-        Self {
-            owner_address: owner_address.into(),
-            interchain_account_id: interchain_account_id.into(),
-            connection_id: connection_id.into(),
-        }
-    }
 }
 
 impl StargateQuery for QueryInterchainAccountAddressRequest {

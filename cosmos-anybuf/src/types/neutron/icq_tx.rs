@@ -44,8 +44,7 @@ impl StargateResponse for MsgRegisterInterchainQueryResponse {
 }
 
 pub struct MsgRemoveInterchainQueryRequest {
-    pub query_id: u64, // 1
-    // is the signer of the message
+    pub query_id: u64,  // 1
     pub sender: String, // 2
 }
 
@@ -67,7 +66,7 @@ pub struct MsgUpdateInterchainQueryRequest {
     pub new_keys: Vec<KVKey>,            // 2
     pub new_update_period: u64,          // 3
     pub new_transactions_filter: String, // 4
-    pub sender: String,                  // 5 is the signer of the message
+    pub sender: String,                  // 5
 }
 
 impl StargateMsg for MsgUpdateInterchainQueryRequest {

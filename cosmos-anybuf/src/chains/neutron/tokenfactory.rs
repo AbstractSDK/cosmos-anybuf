@@ -12,6 +12,7 @@ use super::Neutron;
 
 impl TokenFactory for Neutron {
     type Params = Params;
+    type MsgCreateDenomResponse = tokenfactory_tx::MsgCreateDenomResponse;
     type QueryDenomAuthorityMetadataResponse = QueryDenomAuthorityMetadataResponse;
     type QueryParamsResponse = QueryParamsResponse;
     type QueryDenomsFromCreatorResponse = QueryDenomsFromCreatorResponse;

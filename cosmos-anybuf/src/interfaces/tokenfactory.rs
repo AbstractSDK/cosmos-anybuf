@@ -3,13 +3,26 @@ use cosmwasm_std::{CosmosMsg, QuerierWrapper, StdResult};
 use crate::{anybuf_interface::StargateResponse, types::bank::Metadata};
 
 pub trait TokenFactory {
+    // Params
     type Params;
+    // Msg responses
+    type MsgCreateDenomResponse: StargateResponse;
+    // Query Responses
     type QueryDenomAuthorityMetadataResponse: StargateResponse;
     type QueryParamsResponse: StargateResponse;
     type QueryDenomsFromCreatorResponse: StargateResponse;
     type QueryBeforeSendHookAddressResponse: StargateResponse;
 
     fn create_denom(sender: impl Into<String>, subdenom: impl Into<String>) -> CosmosMsg;
+
+    fn parse_create_denom_response(
+        data: cosmwasm_std::Binary,
+    ) -> StdResult<Self::MsgCreateDenomResponse> {
+        Self::MsgCreateDenomResponse::from_buf(data.0).ok_or(cosmwasm_std::StdError::ParseErr {
+            target_type: stringify!(MsgCreateDenomResponse).to_owned(),
+            msg: "Failed to deserialize proto".to_owned(),
+        })
+    }
 
     fn mint(
         sender: impl Into<String>,

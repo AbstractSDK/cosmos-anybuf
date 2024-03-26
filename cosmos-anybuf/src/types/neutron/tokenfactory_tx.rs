@@ -1,21 +1,12 @@
 use crate::{
     types::{bank::Metadata, coin::Coin, tokenfactory::Params},
-    StargateMsg,
+    StargateMsg, StargateResponse,
 };
-use anybuf::Anybuf;
+use anybuf::{Anybuf, Bufany};
 
 pub struct MsgCreateDenom {
-    pub sender: String,
-    pub subdenom: String,
-}
-
-impl MsgCreateDenom {
-    pub fn new(sender: impl Into<String>, subdenom: impl Into<String>) -> Self {
-        Self {
-            sender: sender.into(),
-            subdenom: subdenom.into(),
-        }
-    }
+    pub sender: String,   // 1
+    pub subdenom: String, // 2
 }
 
 impl StargateMsg for MsgCreateDenom {
@@ -28,6 +19,18 @@ impl StargateMsg for MsgCreateDenom {
             .append_string(1, &self.sender)
             .append_string(2, &self.subdenom)
             .into_vec()
+    }
+}
+
+pub struct MsgCreateDenomResponse {
+    pub new_token_denom: String, // 1
+}
+
+impl StargateResponse for MsgCreateDenomResponse {
+    fn from_buf(buf: Vec<u8>) -> Option<Self> {
+        let deserialized = Bufany::deserialize(&buf).ok()?;
+        let new_token_denom = deserialized.string(1)?;
+        Some(Self { new_token_denom })
     }
 }
 
