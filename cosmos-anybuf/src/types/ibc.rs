@@ -1,5 +1,6 @@
 use anybuf::{Anybuf, Bufany};
 
+#[cosmwasm_schema::cw_serde]
 pub struct Height {
     pub revision_number: u64, // 1
     pub revision_height: u64, // 2

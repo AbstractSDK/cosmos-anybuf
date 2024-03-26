@@ -93,6 +93,7 @@ impl StargateQuery for QueryRegisteredQueryRequest {
     }
 }
 
+#[cosmwasm_schema::cw_serde]
 pub struct QueryRegisteredQueryResponse {
     pub registered_query: RegisteredQuery, // 1
 }

@@ -38,6 +38,7 @@ impl Params {
 }
 
 /// Describes a KV key for which you want to get value from the storage on remote chain
+#[cosmwasm_schema::cw_serde]
 pub struct KVKey {
     /// Path (storage prefix) to the storage where you want to read value by key
     /// (usually name of cosmos-sdk module: 'staking', 'bank', etc.)
@@ -66,6 +67,7 @@ impl KVKey {
     }
 }
 
+#[cosmwasm_schema::cw_serde]
 pub struct RegisteredQuery {
     // The unique id of the registered query.
     pub id: u64, // 1
