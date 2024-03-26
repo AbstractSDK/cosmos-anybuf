@@ -1,5 +1,5 @@
 pub(crate) mod anybuf_interface;
-pub(crate) mod types;
+pub mod types;
 
 pub use anybuf_interface::*;
 
