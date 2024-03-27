@@ -17,6 +17,7 @@ pub mod dex_tx;
 // Fee refunder
 // https://docs.neutron.org/neutron/modules/feerefunder/overview
 pub mod feerefunder;
+pub mod feerefunder_query;
 
 // interchain txs
 // https://docs.neutron.org/neutron/modules/interchain-txs/overview

@@ -46,3 +46,13 @@ impl From<cosmwasm_std::Coin> for Coin {
         Self::new(value.amount, value.denom)
     }
 }
+
+impl From<Coin> for cosmwasm_std::Coin {
+    fn from(value: Coin) -> Self {
+        Self {
+            denom: value.denom,
+            // Assuming we always get correct response
+            amount: value.amount.parse().unwrap(),
+        }
+    }
+}

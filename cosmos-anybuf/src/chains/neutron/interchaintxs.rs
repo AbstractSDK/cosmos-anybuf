@@ -2,7 +2,7 @@ use cosmwasm_std::Coin;
 
 use crate::{
     interfaces::InterchainTxs,
-    types::neutron::{feerefunder, ictxs_query, ictxs_tx, interchaintxs},
+    types::neutron::{feerefunder, feerefunder_query, ictxs_query, ictxs_tx, interchaintxs},
     Any, StargateMsg,
 };
 
@@ -114,5 +114,20 @@ impl InterchainTxs for Neutron {
                 connection_id: connection_id.into(),
             },
         )
+    }
+
+    fn query_min_fee(querier: &cosmwasm_std::QuerierWrapper) -> cosmwasm_std::StdResult<IbcFee> {
+        let response: feerefunder_query::QueryParamsResponse =
+            crate::utils::query_decode(querier, feerefunder_query::QueryParamsRequest {})?;
+        let feerefunder::Fee {
+            recv_fee,
+            ack_fee,
+            timeout_fee,
+        } = response.params.min_fee;
+        Ok(IbcFee {
+            recv_fee: recv_fee.into_iter().map(Into::into).collect(),
+            ack_fee: ack_fee.into_iter().map(Into::into).collect(),
+            timeout_fee: timeout_fee.into_iter().map(Into::into).collect(),
+        })
     }
 }

@@ -49,4 +49,6 @@ pub trait InterchainTxs {
         interchain_account_id: impl Into<String>,
         connection_id: impl Into<String>,
     ) -> StdResult<Self::QueryInterchainAccountAddressResponse>;
+
+    fn query_min_fee(querier: &cosmwasm_std::QuerierWrapper) -> cosmwasm_std::StdResult<IbcFee>;
 }
