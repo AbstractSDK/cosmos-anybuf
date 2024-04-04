@@ -21,8 +21,8 @@ pub fn query_decode<R: StargateResponse, Q: StargateQuery>(
             "Querier contract error: {contract_err}"
         ))),
         SystemResult::Ok(ContractResult::Ok(value)) => {
-            R::from_buf(value.0).ok_or(StdError::generic_err(format!(
-                "Failed to deserialize response to {}, raw: {raw:x?}",
+            R::from_buf(value.0.clone()).ok_or(StdError::generic_err(format!(
+                "Failed to deserialize response to {}, value: {value:?}",
                 std::any::type_name::<R>()
             )))
         }
