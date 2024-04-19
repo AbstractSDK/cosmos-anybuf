@@ -62,4 +62,5 @@ use cosmos_anybuf::{chains::neutron::Neutron, interfaces::TokenFactory};
 pub fn query_params(deps: Deps) -> StdResult<<Neutron as TokenFactory>::QueryParamsResponse> {
     let params = Neutron::query_params(&deps.querier)?;
     Ok(params)
+}
 ```
